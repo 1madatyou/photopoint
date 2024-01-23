@@ -6,6 +6,12 @@ services:
     image: redis:6.0-alpine
     volumes:
      - redis_data:/var/lib/redis/data
+     
+  django:
+    build:
+      context: ./project/
+      dockerfile: Dockerfile
+    command: sh -c "python /usr/src/project/manage.py migrate && python /usr/src/project/manage.py runserver 0.0.0.0:8000" 
 
   celery: 
     build:
@@ -14,6 +20,7 @@ services:
     command: celery -A core worker -l info
     depends_on:
       - redis
+      - django
 
   celery_beat:
     build:
@@ -22,13 +29,10 @@ services:
     command: celery -A core beat -l info 
     depends_on:
       - redis
+      - django
 
 
-  django:
-    build:
-      context: ./project/
-      dockerfile: Dockerfile
-    command: sh -c "python /usr/src/project/manage.py migrate && python /usr/src/project/manage.py runserver 0.0.0.0:8000"
+
   
 
 
