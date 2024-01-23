@@ -1,0 +1,37 @@
+version: '3.7'
+
+services:
+
+  redis:
+    image: redis:6.0-alpine
+    volumes:
+     - redis_data:/var/lib/redis/data
+
+  celery: 
+    build:
+      context: ./project/
+      dockerfile: Dockerfile
+    command: celery -A core worker -l info
+    depends_on:
+      - redis
+
+  celery_beat:
+    build:
+      context: ./project/
+      dockerfile: Dockerfile
+    command: celery -A core beat -l info 
+    depends_on:
+      - redis
+
+
+  django:
+    build:
+      context: ./project/
+      dockerfile: Dockerfile
+    command: sh -c "python /usr/src/project/manage.py migrate && python /usr/src/project/manage.py runserver 0.0.0.0:8000"
+  
+
+
+volumes:
+  django_project_code:
+  redis_data:

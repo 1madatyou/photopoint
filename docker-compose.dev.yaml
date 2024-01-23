@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+
+  celery: 
+    volumes: 
+      - .:/usr/src
+    env_file:
+      - ./.env
+
+  celery_beat:
+    volumes: 
+      - .:/usr/src
+    env_file:
+      - ./.env
+
+  django:
+    env_file:
+      - ./.env
+    volumes: 
+      - .:/usr/src
+    ports:
+      - 8000:8000
+  
+
+
+volumes:
+  django_project_code:
+  redis_data:
