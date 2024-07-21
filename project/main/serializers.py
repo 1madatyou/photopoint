@@ -2,7 +2,8 @@ from rest_framework.serializers import ModelSerializer
 
 from .models import CurrencyRate
 
+
 class CurrencyRateSerializer(ModelSerializer):
     class Meta:
         model = CurrencyRate
-        fields = '__all__'
+        fields = "__all__"

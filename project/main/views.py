@@ -12,17 +12,12 @@ class USDRUBView(APIView):
 
         try:
             rates = CurrencyRate.objects.filter(
-                from_currency='USD',
-                to_currency='RUB',
-            ).order_by('-id')[:10]
+                from_currency="USD",
+                to_currency="RUB",
+            ).order_by("-id")[:10]
         except CurrencyRate.DoesNotExist:
-            return Response(
-                status=HTTP_404_NOT_FOUND
-            )
-        
+            return Response(status=HTTP_404_NOT_FOUND)
+
         serializer = CurrencyRateSerializer(rates, many=True)
 
-        return Response(
-            data=serializer.data,
-            status=HTTP_200_OK
-        )
+        return Response(data=serializer.data, status=HTTP_200_OK)
